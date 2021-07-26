@@ -1,39 +1,49 @@
-import React from 'react'
-import Course from './Course'
+import React, { useState } from 'react'
+import Note from './components/Note'
 
-const App = ({courses}) => {
+const App = () => {
+  const [ persons, setPersons ] = useState([]) 
+  const [ newName, setNewName ] = useState('a new person...')
 
-
-  
-    const Header = () => {
-      return(
-        <h1> Web development curriculum </h1>)}
-    
-   
-  const Content = () => {
-    return (
-     <div>
-    {courses.map(course=> 
-      <Course key={course.id} course={course}/>
-    )} 
-   </div>
-    )}
-
-    //const Statistics = () => {
-    //const sum = courses.reduce((s, ac) =>
-    //s+ac.exercises,{})
-    //return( <p>total of {sum} exercises</p>)
-    //}
-
-
-
-    return (
-      <div>
-      <Header />
-      <Content />
-
-      </div>
-    )
+  const addNote = (event) => {
+    event.preventDefault()
+    const personObject = {
+      name: newName,
+      important: Math.random() < 0.5,
+      id: persons.length + 1,
     }
+
+    console.log('is...'+newName)
+  
+    setPersons(persons.concat(personObject))
+    setNewName(newName)
+    console.log('is personObject '+persons.length)
+  }
+
+  const handleNoteChange = (event) => {
+    console.log(event.target.value)
+    setNewName(event.target.value)
+  }
+
+  return (
+    <div>
+      <h2>Phonebook</h2>
+      <form onSubmit={addNote}>
+        <div>
+          name: <input value={newName} onChange={handleNoteChange} />
+        </div>
+        <div>
+          <button type="submit">add</button>
+        </div>
+      </form>
+      <h2>Numbers</h2>
+      <div>
+        {persons.map(person => 
+            <Note key={person.id} person={person} />
+        )}
+      </div>
+    </div>
+  )
+}
 
 export default App
